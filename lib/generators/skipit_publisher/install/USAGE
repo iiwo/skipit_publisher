@@ -1,0 +1,5 @@
+Description:
+    Generates publisher configuration
+
+Example:
+    rails generate skipit_publisher:install

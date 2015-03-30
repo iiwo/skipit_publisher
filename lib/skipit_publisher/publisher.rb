@@ -1,7 +1,7 @@
 module SkipitPublisher
   class Publisher
 
-    PUBLISHERS = [SkipitPublisher::PublisherAPN]
+    PUBLISHERS = [SkipitPublisher::PublisherAPN, SkipitPublisher::PublisherFaye]
 
     class << self
 
