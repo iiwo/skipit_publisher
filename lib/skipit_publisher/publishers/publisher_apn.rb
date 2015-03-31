@@ -1,16 +1,15 @@
 module SkipitPublisher
   class PublisherAPN < SkipitPublisher::PublisherBase
 
-    cattr_accessor :ios_app_name
-    cattr_accessor :certificate_path
-    cattr_accessor :environment
+    cattr_accessor :apps
     cattr_accessor :client
 
     class << self
 
-      def publish(identifier, message, data, options={})
+      def publish(app, identifier, message, data, options={})
+        raise 'Invalid configuration' unless valid?(app)
         notification = Rpush::Apns::Notification.new
-        notification.app = self.client
+        notification.app = self.client(app)
         notification.device_token = identifier
         notification.alert = message
         notification.data = data
@@ -21,22 +20,26 @@ module SkipitPublisher
         :ios
       end
 
-      def client
-        @@client || initialize_client
+      def client(app)
+        initialize_client(app)
       end
 
-      def initialize_client
-        Rpush::Apns::App.find_by_name(SkipitPublisher::PublisherAPN.ios_app_name) || create_app
+      def initialize_client(app)
+        Rpush::Apns::App.find_by_name(app[:name]) || create_app(app)
       end
 
-      def create_app
-        app = Rpush::Apns::App.new
-        app.name = SkipitPublisher::PublisherAPN.ios_app_name
-        app.certificate = File.read(SkipitPublisher::PublisherAPN.certificate_path)
-        app.environment = SkipitPublisher::PublisherAPN.environment
-        app.connections = 1
-        app.save!
-        app
+      def create_app(app)
+        rpush_app = Rpush::Apns::App.new
+        rpush_app.name = app[:name]
+        rpush_app.certificate = File.read(app[:certificate_path])
+        rpush_app.environment = app[:environment]
+        rpush_app.connections = 1
+        rpush_app.save!
+        rpush_app
+      end
+
+      def valid?(app)
+        app.present? && app[:name].present? && app[:certificate_path].present? && app[:environment].present?
       end
 
     end

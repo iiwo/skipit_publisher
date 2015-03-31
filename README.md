@@ -11,7 +11,7 @@ Run the bundle command to install it.
 After you install Publisher and add it to your Gemfile, you need to run the generator:
 
 ```console
-rails skipit_publisher:install
+rails generate skipit_publisher:install
 ```
 
 ## Configuration
@@ -23,7 +23,7 @@ rpush: bundle exec rpush start -e $RACK_ENV -f
 ## Example usage
 
 ```ruby
-          SkipitPublisher::Publisher.publish('this is a test message',
+          SkipitPublisher::Publisher.publish('app_name','this is a test message',
                   { :ios => 'af826ab01bfc170b7ffd967da099aff5e52a56a79e6209fcfbf6d8803acbc986',
                     :faye =>'user_123'},
                   { user_id: 123 }

@@ -1,8 +1,17 @@
 require 'skipit_publisher'
 SkipitPublisher::PublisherAPN.configure do |config|
-  config.ios_app_name = 'skipit_ios'
-  config.certificate_path = 'config/cert/skipit_dev.pem'
-  config.environment = :sandbox
+  config.apps = [
+      {
+          name: 'skipit_client',
+          certificate_path: 'config/cert/skipit_dev.pem',
+          environment: :sandbox
+      },
+      {
+          name: 'skipit_merchant',
+          certificate_path: 'config/cert/skipit_dev.pem',
+          environment: :sandbox
+      }
+  ]
 end
 
 uri = nil
@@ -14,5 +23,14 @@ end
 
 SkipitPublisher::PublisherFaye.configure do |config|
   config.redis_uri = uri
-  config.channel_name = 'publisher'
+  config.apps = [
+      {
+          name: 'skipit_client',
+          redis_channel: 'publisher'
+      },
+      {
+          name: 'skipit_merchant',
+          redis_channel: 'publisher'
+      }
+  ]
 end

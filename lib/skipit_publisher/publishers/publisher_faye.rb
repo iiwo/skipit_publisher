@@ -2,14 +2,15 @@ module SkipitPublisher
   class PublisherFaye < SkipitPublisher::PublisherBase
 
     cattr_accessor :redis_uri
-    cattr_accessor :channel_name
+    cattr_accessor :apps
     cattr_accessor :client
 
     class << self
 
-      def publish(identifier, message, data, options={})
-        message = {channel: "/#{identifier}", message: message, data: data}.to_json
-        client.publish(SkipitPublisher::PublisherFaye.channel_name, message)
+      def publish(app, identifier, message, data, options={})
+        raise 'Invalid configuration' unless valid?(app) && SkipitPublisher::PublisherFaye.redis_uri.present?
+        message = {channel: "/#{identifier}", message: message, data: data, app: app[:name]}.to_json
+        client.publish(app[:redis_channel], message)
       end
 
       def name
@@ -22,6 +23,10 @@ module SkipitPublisher
 
       def initialize_client
         @@client = Redis.new(url: SkipitPublisher::PublisherFaye.redis_uri)
+      end
+
+      def valid?(app)
+        app.present? && app[:name].present? && app[:redis_channel].present?
       end
 
     end
