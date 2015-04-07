@@ -34,3 +34,18 @@ SkipitPublisher::PublisherFaye.configure do |config|
       }
   ]
 end
+
+SkipitPublisher::PublisherEmail.configure do |config|
+  config.apps = [
+      {
+          name: 'skipit_client',
+          from: 'Skipit <notifications@skipit.com>',
+          subject: 'Your order has been updated'
+      },
+      {
+          name: 'skipit_merchant',
+          from: 'Skipit <notifications@skipit.com>',
+          subject: 'There\'s a new order'
+      }
+  ]
+end

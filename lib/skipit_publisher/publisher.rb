@@ -1,16 +1,16 @@
 module SkipitPublisher
   class Publisher
 
-    PUBLISHERS = [SkipitPublisher::PublisherAPN, SkipitPublisher::PublisherFaye]
+    PUBLISHERS = [SkipitPublisher::PublisherAPN, SkipitPublisher::PublisherFaye, SkipitPublisher::PublisherEmail]
 
     class << self
 
       # Broadcast message to requested publishers ( among registered ones ) identified by name
       #
       # example usage:
-      #    publish('skipit_client', this is a test message',
+      #    publish('skipit_client', 'this is a test message',
       #            { :ios => 'af826ab01bfc170b7ffd967da099aff5e52a56a79e6209fcfbf6d8803acbc986',
-      #              :faye =>'user_af826ab01'},
+      #              :faye =>'user_af826ab01', :email =>'test@test.com'},
       #            { user_id: 4 }
       #    )
       def publish(app_name, message, identifiers, data = {}, options={})

@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'redis'
   s.add_dependency 'em-hiredis'
   s.add_dependency 'faye'
+  s.add_dependency 'delayed_job_active_record'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'factory_girl_rails'

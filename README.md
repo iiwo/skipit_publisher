@@ -25,7 +25,7 @@ rpush: bundle exec rpush start -e $RACK_ENV -f
 ```ruby
           SkipitPublisher::Publisher.publish('app_name','this is a test message',
                   { :ios => 'af826ab01bfc170b7ffd967da099aff5e52a56a79e6209fcfbf6d8803acbc986',
-                    :faye =>'user_123'},
+                    :faye =>'user_123', :email =>'test@test.com'},
                   { user_id: 123 }
           )
 ```
